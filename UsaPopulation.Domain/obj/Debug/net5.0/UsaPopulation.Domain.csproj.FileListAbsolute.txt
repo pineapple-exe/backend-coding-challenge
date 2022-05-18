@@ -1,0 +1,12 @@
+C:\Projects\UsaPopulation.WebApi\UsaPopulation.Domain\bin\Debug\net5.0\UsaPopulation.Domain.deps.json
+C:\Projects\UsaPopulation.WebApi\UsaPopulation.Domain\bin\Debug\net5.0\UsaPopulation.Domain.dll
+C:\Projects\UsaPopulation.WebApi\UsaPopulation.Domain\bin\Debug\net5.0\ref\UsaPopulation.Domain.dll
+C:\Projects\UsaPopulation.WebApi\UsaPopulation.Domain\bin\Debug\net5.0\UsaPopulation.Domain.pdb
+C:\Projects\UsaPopulation.WebApi\UsaPopulation.Domain\obj\Debug\net5.0\UsaPopulation.Domain.csproj.AssemblyReference.cache
+C:\Projects\UsaPopulation.WebApi\UsaPopulation.Domain\obj\Debug\net5.0\UsaPopulation.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\UsaPopulation.WebApi\UsaPopulation.Domain\obj\Debug\net5.0\UsaPopulation.Domain.AssemblyInfoInputs.cache
+C:\Projects\UsaPopulation.WebApi\UsaPopulation.Domain\obj\Debug\net5.0\UsaPopulation.Domain.AssemblyInfo.cs
+C:\Projects\UsaPopulation.WebApi\UsaPopulation.Domain\obj\Debug\net5.0\UsaPopulation.Domain.csproj.CoreCompileInputs.cache
+C:\Projects\UsaPopulation.WebApi\UsaPopulation.Domain\obj\Debug\net5.0\UsaPopulation.Domain.dll
+C:\Projects\UsaPopulation.WebApi\UsaPopulation.Domain\obj\Debug\net5.0\ref\UsaPopulation.Domain.dll
+C:\Projects\UsaPopulation.WebApi\UsaPopulation.Domain\obj\Debug\net5.0\UsaPopulation.Domain.pdb
