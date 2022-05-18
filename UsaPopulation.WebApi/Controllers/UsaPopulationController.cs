@@ -8,21 +8,6 @@ using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using static UsaPopulation.Domain.Utils;
 
-//Write a REST Api where you can query for for the difference between difference states population using: 
-//    https://datausa.io/api/data?drilldowns=State&measures=Population&year=latest.
-
-//Also save all queries made with datetime in a database and provide a way to access this information.
-
-//Requirements: Use.NET and SQL Server
-
-//Results:
-
-//Rest API with routes for getting:
-//* The difference between two specific states, filtered by year if chosen   [x]
-//* The state with the biggest/smallest population                           [x]
-//* 1 other interesting comparison/information from the dataset              [x]
-//* Route for accessing logs of queries made to above route
-
 namespace UsaPopulation.WebApi.Controllers
 {
     [ApiController]
@@ -30,10 +15,12 @@ namespace UsaPopulation.WebApi.Controllers
     public class UsaPopulationController : ControllerBase
     {
         private readonly UsaPopulationInteractor _populationInteractor;
+        private readonly QueryLogInteractor _queryLogInteractor;
 
-        public UsaPopulationController(UsaPopulationInteractor populationInteractor)
+        public UsaPopulationController(UsaPopulationInteractor populationInteractor, QueryLogInteractor queryLogInteractor)
         {
             _populationInteractor = populationInteractor;
+            _queryLogInteractor = queryLogInteractor;
         }
 
         private void SaveQuery(PathString path, HttpRequest request)
@@ -41,7 +28,7 @@ namespace UsaPopulation.WebApi.Controllers
             string endpoint = path.ToString().Split('/')[2];
             string pathAndQuery = request.GetEncodedPathAndQuery();
 
-            _populationInteractor.AddQueryLog(DateTime.Now, endpoint, pathAndQuery);
+            _queryLogInteractor.AddQueryLog(DateTime.Now, endpoint, pathAndQuery);
         }
 
         [HttpGet("populationsDiff")] // Describe Diff property
@@ -85,9 +72,19 @@ namespace UsaPopulation.WebApi.Controllers
         }
 
         [HttpGet("queries")]
-        public List<QueryLogOutputModel> GetQueries(int pageSize, int pageIndex)
+        public ActionResult<List<QueryLogOutputModel>> GetQueries(int pageSize, int pageIndex)
         {
-            return _populationInteractor.FetchQueries(pageSize, pageIndex);
+            try
+            {
+                List<QueryLogOutputModel> outputModels = _queryLogInteractor.FetchQueries(pageSize, pageIndex);
+                SaveQuery(HttpContext.Request.Path, HttpContext.Request);
+
+                return outputModels;
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

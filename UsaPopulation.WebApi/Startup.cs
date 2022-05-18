@@ -29,6 +29,7 @@ namespace UsaPopulation.WebApi
             services.AddDbContext<UsaPopulationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<IQueryLogRepository, QueryLogRepository>();
             services.AddTransient<UsaPopulationInteractor>();
+            services.AddTransient<QueryLogInteractor>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

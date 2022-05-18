@@ -7,6 +7,5 @@ namespace UsaPopulation.Domain.Repositories
     public interface IDataUsaRepository
     {
         Task<DataUsa> Request(int? year);
-        Task ExtractState(string state);
     }
 }

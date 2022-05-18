@@ -20,17 +20,12 @@ namespace UsaPopulation.Data.Repositories
         public async Task<DataUsa> Request(int? year)
         {
             using HttpClient webWizard = _factory.CreateClient();
-            string query = year == null ? "&year=" + year.ToString() : "";
+            string query = year != null ? "&year=" + year.ToString() : "";
 
             HttpResponseMessage response = await webWizard.SendAsync(new HttpRequestMessage(HttpMethod.Get, _base + query));
             string content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<DataUsa>(content);
-        }
-
-        public async Task ExtractState(string state)
-        {
-
         }
     }
 }

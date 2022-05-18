@@ -12,12 +12,10 @@ namespace UsaPopulation.Domain.Interactors
     public class UsaPopulationInteractor
     {
         private readonly IDataUsaRepository _dataUsaRepository;
-        private readonly IQueryLogRepository _queryLogRepository;
 
-        public UsaPopulationInteractor(IDataUsaRepository dataUsaRepository, IQueryLogRepository queryLogRepository)
+        public UsaPopulationInteractor(IDataUsaRepository dataUsaRepository)
         {
             _dataUsaRepository = dataUsaRepository;
-            _queryLogRepository = queryLogRepository;
         }
 
         private async Task<bool> StateExists(string state)
@@ -39,10 +37,12 @@ namespace UsaPopulation.Domain.Interactors
         public async Task<List<PopulationsDiffOutputModel>> FetchPopulationsDiff(string stateA, string stateB, int? year = null)
         {
             if (!(await StateExists(stateA) && await StateExists(stateB)))
-                throw new InvalidInputException("Invalid name of state.");
+                throw new InvalidStateException("Invalid name of state.");
 
-            if (!await YearExists(year))
-                throw new InvalidInputException("Year does not exist.");
+            if (year != null) { 
+                if (!await YearExists(year))
+                    throw new InvalidYearException("Year does not exist.");
+            }
 
             DataUsa dataUsa = await _dataUsaRepository.Request(year);
             List<PopulationsDiffOutputModel> populationsDiffOutputModels = new();
@@ -81,13 +81,13 @@ namespace UsaPopulation.Domain.Interactors
         public async Task<List<PopulationProgressionOutputModel>> FetchPopulationProgression(string state, int fromYear, int toYear, bool incrementalStep = false)
         {
             if (!await StateExists(state))
-                throw new InvalidInputException("Invalid name of state.");
+                throw new InvalidStateException("Invalid name of state.");
 
             if (!(await YearExists(fromYear) && await YearExists(toYear)))
-                throw new InvalidInputException("Year does not exist.");
+                throw new InvalidYearException("Year does not exist.");
 
             if (fromYear > toYear)
-                throw new InvalidInputException("From-year needs to precede to-year.");
+                throw new InvalidYearException("From-year needs to precede to-year.");
 
             List<PopulationProgressionOutputModel> outputModels = new();
             DataUsa dataUsa = await _dataUsaRepository.Request(null);
@@ -117,23 +117,6 @@ namespace UsaPopulation.Domain.Interactors
 
                 outputModels.Add(new PopulationProgressionOutputModel(toYear, yearlyIncrement, yearlyIncrementPercent));
             }
-
-            return outputModels;
-        }
-
-        public void AddQueryLog(DateTime receivedAt, string endpoint, string pathAndQuery)
-        {
-            _queryLogRepository.AddQueryLog(new QueryLog { DateTime = receivedAt, Endpoint = endpoint, PathAndQuery = pathAndQuery });
-        }
-
-        public List<QueryLogOutputModel> FetchQueries(int pageSize, int pageIndex)
-        {
-            IQueryable<QueryLog> relevantQueries = _queryLogRepository.GetAllQueryLogs()
-                .OrderBy(q => q.DateTime)
-                .Skip(pageSize * pageIndex)
-                .Take(pageSize);
-
-            var outputModels = relevantQueries.Select(q => new QueryLogOutputModel(q.DateTime, q.Endpoint, q.PathAndQuery)).ToList();
 
             return outputModels;
         }
