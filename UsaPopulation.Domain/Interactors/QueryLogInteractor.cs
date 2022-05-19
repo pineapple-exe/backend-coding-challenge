@@ -28,8 +28,8 @@ namespace UsaPopulation.Domain.Interactors
 
         public List<QueryLogOutputModel> FetchQueries(int pageSize, int pageIndex)
         {
-            if (pageSize < 0 || pageIndex < 0)
-                throw new InvalidNumberException("Number was negative.");
+            if (pageSize <= 0 || pageIndex < 0)
+                throw new InvalidNumberException("Number was too low.");
 
             IQueryable<QueryLog> allQueries = _queryLogRepository.GetAllQueryLogs();
             List<QueryLogOutputModel> outputModels = new();
