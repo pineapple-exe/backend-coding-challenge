@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System.IO;
 using UsaPopulation.Data;
 using UsaPopulation.Data.Repositories;
 using UsaPopulation.Domain.Interactors;
@@ -35,6 +36,9 @@ namespace UsaPopulation.WebApi
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UsaPopulation.WebApi", Version = "v1" });
+
+                var filePath = Path.Combine(System.AppContext.BaseDirectory, "UsaPopulation.WebApi.xml");
+                c.IncludeXmlComments(filePath);
             });
         }
 

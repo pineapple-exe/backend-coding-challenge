@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UsaPopulation.WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:UsaPopulation.WebApi.Controllers.UsaPopulationController.GetPopulationsDiff(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            The population difference of two given states at all years or one specified year.
+            Diff property is the result of state A population subtract state B population.
+            </summary>
+        </member>
+        <member name="M:UsaPopulation.WebApi.Controllers.UsaPopulationController.GetBiggestOrSmallestPopulationState(UsaPopulation.Domain.Utils.SuperlativeSize)">
+            <summary>
+            The state with either biggest or smallest population at latest year.
+            </summary>
+        </member>
+        <member name="M:UsaPopulation.WebApi.Controllers.UsaPopulationController.GetPopulationProgression(System.String,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            The population progression of a state, in quantity and percent. Choose incremental steps to see each yearly change.
+            </summary>
+        </member>
+        <member name="M:UsaPopulation.WebApi.Controllers.UsaPopulationController.GetQueries(System.Int32,System.Int32)">
+            <summary>
+            Queries in paginated set.
+            </summary>
+        </member>
+    </members>
+</doc>

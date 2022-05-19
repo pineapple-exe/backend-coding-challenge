@@ -31,7 +31,11 @@ namespace UsaPopulation.WebApi.Controllers
             _queryLogInteractor.AddQueryLog(DateTime.Now, endpoint, pathAndQuery);
         }
 
-        [HttpGet("populationsDiff")] // Describe Diff property
+        /// <summary>
+        /// The population difference of two given states at all years or one specified year.
+        /// Diff property is the result of state A population subtract state B population.
+        /// </summary>
+        [HttpGet("populationsDiff")]
         public async Task<ActionResult<List<PopulationsDiffOutputModel>>> GetPopulationsDiff(string stateA, string stateB, int? year = null)
         {
             try 
@@ -41,12 +45,19 @@ namespace UsaPopulation.WebApi.Controllers
 
                 return outputModels;
             }
-            catch(Exception e)
+            catch(InvalidStateException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (InvalidYearException e)
             {
                 return BadRequest(e.Message);
             }
         }
 
+        /// <summary>
+        /// The state with either biggest or smallest population at latest year.
+        /// </summary>
         [HttpGet("biggestSmallest")]
         public async Task<StateOutputModel> GetBiggestOrSmallestPopulationState(SuperlativeSize biggestOrSmallest)
         {
@@ -55,6 +66,9 @@ namespace UsaPopulation.WebApi.Controllers
             return await _populationInteractor.FetchBiggestOrSmallest(biggestOrSmallest);
         }
 
+        /// <summary>
+        /// The population progression of a state, in quantity and percent. Choose incremental steps to see each yearly change.
+        /// </summary>
         [HttpGet("populationProgression")]
         public async Task<ActionResult<List<PopulationProgressionOutputModel>>> GetPopulationProgression(string state, int fromYear, int toYear, bool incrementalSteps = false)
         {
@@ -65,12 +79,19 @@ namespace UsaPopulation.WebApi.Controllers
 
                 return outputModels;
             }
-            catch(Exception e)
+            catch(InvalidStateException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (InvalidYearException e)
             {
                 return BadRequest(e.Message);
             }
         }
 
+        /// <summary>
+        /// Queries in paginated set.
+        /// </summary>
         [HttpGet("queries")]
         public ActionResult<List<QueryLogOutputModel>> GetQueries(int pageSize, int pageIndex)
         {
@@ -81,7 +102,7 @@ namespace UsaPopulation.WebApi.Controllers
 
                 return outputModels;
             }
-            catch(Exception e)
+            catch(InvalidNumberException e)
             {
                 return BadRequest(e.Message);
             }

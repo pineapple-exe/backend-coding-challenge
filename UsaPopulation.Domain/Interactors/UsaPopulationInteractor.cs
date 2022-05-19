@@ -20,6 +20,8 @@ namespace UsaPopulation.Domain.Interactors
 
         private async Task<bool> StateExists(string state)
         {
+            if (state == null) return false;
+
             DataUsa dataUsa = await _dataUsaRepository.Request(null);
             IEnumerable<string> existingStates = dataUsa.Data.Select(s => s.State.ToLower()).Distinct();
 
